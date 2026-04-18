@@ -67,6 +67,10 @@ final class SquirrelTheme {
   private(set) var inlineCandidate = false
   private(set) var showPaging = false
 
+  // [squirrel-fluid] 动画模式。默认 .sogou 是本 fork 的卖点。
+  // YAML 配置：`style/animation_mode: sogou | smooth | off`
+  private(set) var animationMode: AnimationMode = .sogou
+
   private var fonts = [NSFont]()
   private var labelFonts = [NSFont]()
   private var commentFonts = [NSFont]()
@@ -204,6 +208,11 @@ final class SquirrelTheme {
     statusMessageType ?= .init(rawValue: config.getString("style/status_message_type") ?? "")
     candidateFormat ?= config.getString("style/candidate_format")
 
+    // [squirrel-fluid] 读取动画模式。可在顶层 style/ 下设置，也可在 color scheme 里覆盖
+    if let animRaw = config.getString("style/animation_mode") {
+      animationMode = AnimationMode.parse(animRaw)
+    }
+
     alpha ?= config.getDouble("style/alpha").map { min(1, max(0, $0)) }
     cornerRadius ?= config.getDouble("style/corner_radius")
     hilitedCornerRadius ?= config.getDouble("style/hilited_corner_radius")
@@ -255,6 +264,10 @@ final class SquirrelTheme {
         mutualExclusive ?= config.getBool("\(prefix)/mutual_exclusive")
         showPaging ?= config.getBool("\(prefix)/show_paging")
         candidateFormat ?= config.getString("\(prefix)/candidate_format")
+        // [squirrel-fluid] color scheme 内的动画模式覆盖
+        if let animRaw = config.getString("\(prefix)/animation_mode") {
+          animationMode = AnimationMode.parse(animRaw)
+        }
         fontName ?= config.getString("\(prefix)/font_face")
         fontSize ?= config.getDouble("\(prefix)/font_point")
         labelFontName ?= config.getString("\(prefix)/label_font_face")

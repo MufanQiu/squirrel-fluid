@@ -16,6 +16,12 @@ final class SquirrelPanel: NSPanel {
   private var screenRect: NSRect = .zero
   private var maxHeight: CGFloat = 0
 
+  // [squirrel-fluid] 动画模式，由 SquirrelTheme 在 load() 里设置。
+  //   默认 .sogou：开启本 fork 的搜狗风动画
+  //   .off：等价于 upstream Squirrel 的无动画行为
+  //   .smooth：更短 duration + easeOut，连打多键更跟手
+  var animationMode: AnimationMode = .sogou
+
   private var statusMessage: String = ""
   private var statusTimer: Timer?
 
@@ -150,8 +156,18 @@ final class SquirrelPanel: NSPanel {
   func hide() {
     statusTimer?.invalidate()
     statusTimer = nil
-    orderOut(nil)
-    maxHeight = 0
+    // [squirrel-fluid] sogou 模式下瞬切（逆向证据：-[SGCandidatesController hideWindow]
+    // 直接 orderOut + setFrame:NSZeroRect，无动画）；smooth 模式给一个短 fade。
+    AnimationCoordinator.animateHide(mode: animationMode, animations: {
+      if animationMode.hideDuration > 0 {
+        self.animator().alphaValue = 0
+      }
+    }, completion: {
+      self.orderOut(nil)
+      // 下次 show 会重新设置 alpha，这里复位防止再次出现时透明
+      self.alphaValue = self.view.currentTheme.alpha
+      self.maxHeight = 0
+    })
   }
 
   // Main function to add attributes to text output from librime
@@ -313,6 +329,9 @@ final class SquirrelPanel: NSPanel {
       view.lightTheme = SquirrelTheme()
       view.lightTheme.load(config: config, dark: isDark)
     }
+    // [squirrel-fluid] 把 theme 里解析出的动画模式同步到 panel
+    // 两个 theme（light/dark）共享同一个动画模式，因为动画行为与主题无关
+    self.animationMode = view.currentTheme.animationMode
   }
 }
 
@@ -419,7 +438,23 @@ private extension SquirrelPanel {
     if panelRect.minY < screenRect.minY {
       panelRect.origin.y = screenRect.minY
     }
-    self.setFrame(panelRect, display: true)
+
+    // [squirrel-fluid] 窗口 frame 过渡。
+    // 对应搜狗 -[SGCandidatesController updateWindow:] 的 NSViewAnimation 0.2s。
+    // 第一次出现（!isVisible）时瞬切到目标位置并 fade in；
+    // 已可见时走 animator().setFrame:，AppKit 自动包装成过渡动画。
+    let isFirstShow = !self.isVisible
+    if isFirstShow {
+      // 首次显示：先瞬切 frame，然后淡入
+      self.setFrame(panelRect, display: true)
+    } else if animationMode == .off {
+      self.setFrame(panelRect, display: true)
+    } else {
+      // 已可见：用 animator 过渡到新 frame
+      AnimationCoordinator.animateWindow(mode: animationMode) {
+        self.animator().setFrame(panelRect, display: true)
+      }
+    }
 
     // rotate the view, the core in vertical mode!
     if vertical {
@@ -446,9 +481,19 @@ private extension SquirrelPanel {
     } else {
       back.isHidden = true
     }
-    alphaValue = theme.alpha
     invalidateShadow()
-    orderFront(nil)
+
+    // [squirrel-fluid] 首次出现时做 fade in；已可见时保持 alpha 不变
+    if isFirstShow && animationMode != .off {
+      alphaValue = 0
+      orderFront(nil)
+      AnimationCoordinator.animateWindow(mode: animationMode) {
+        self.animator().alphaValue = theme.alpha
+      }
+    } else {
+      alphaValue = theme.alpha
+      orderFront(nil)
+    }
     // voila!
   }
 

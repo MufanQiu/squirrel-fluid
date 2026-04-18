@@ -82,6 +82,8 @@
 		B39771272BED9B250093A49B /* SquirrelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771262BED9B250093A49B /* SquirrelTheme.swift */; };
 		B39771292BEDAF4A0093A49B /* SquirrelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771282BEDAF4A0093A49B /* SquirrelView.swift */; };
 		B397712B2BEE4C160093A49B /* SquirrelPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712A2BEE4C160093A49B /* SquirrelPanel.swift */; };
+		79E0B40D8EC148DBBE00CFB3 /* AnimationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF774977E0634B7EB6BDDB16 /* AnimationMode.swift */; };
+		51F67EE8A2DC4D1F973303BA /* AnimationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA026BFB56764C7F97439E51 /* AnimationCoordinator.swift */; };
 		B397712D2BEEB39D0093A49B /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712C2BEEB39D0093A49B /* InputSource.swift */; };
 		B397712F2BEECBED0093A49B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B397712E2BEECBED0093A49B /* Main.swift */; };
 		B39771312BEEE4540093A49B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B39771302BEEE4540093A49B /* InfoPlist.xcstrings */; };
@@ -289,6 +291,8 @@
 		B39771262BED9B250093A49B /* SquirrelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelTheme.swift; path = sources/SquirrelTheme.swift; sourceTree = "<group>"; };
 		B39771282BEDAF4A0093A49B /* SquirrelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelView.swift; path = sources/SquirrelView.swift; sourceTree = "<group>"; };
 		B397712A2BEE4C160093A49B /* SquirrelPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SquirrelPanel.swift; path = sources/SquirrelPanel.swift; sourceTree = "<group>"; };
+		AF774977E0634B7EB6BDDB16 /* AnimationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnimationMode.swift; path = sources/Animation/AnimationMode.swift; sourceTree = "<group>"; };
+		BA026BFB56764C7F97439E51 /* AnimationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnimationCoordinator.swift; path = sources/Animation/AnimationCoordinator.swift; sourceTree = "<group>"; };
 		B397712C2BEEB39D0093A49B /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InputSource.swift; path = sources/InputSource.swift; sourceTree = "<group>"; };
 		B397712E2BEECBED0093A49B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Main.swift; path = sources/Main.swift; sourceTree = "<group>"; };
 		B39771302BEEE4540093A49B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = InfoPlist.xcstrings; path = resources/InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -328,6 +332,8 @@
 				B39771242BED899F0093A49B /* SquirrelConfig.swift */,
 				B35D2FE72BF00839009D156B /* BridgingFunctions.swift */,
 				B38E9B8F2BE9AE1E0036ABEF /* Squirrel-Bridging-Header.h */,
+				AF774977E0634B7EB6BDDB16 /* AnimationMode.swift */,
+				BA026BFB56764C7F97439E51 /* AnimationCoordinator.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -589,6 +595,8 @@
 				B38E9B912BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift in Sources */,
 				B39771272BED9B250093A49B /* SquirrelTheme.swift in Sources */,
 				B35D2FE82BF00839009D156B /* BridgingFunctions.swift in Sources */,
+				79E0B40D8EC148DBBE00CFB3 /* AnimationMode.swift in Sources */,
+				51F67EE8A2DC4D1F973303BA /* AnimationCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
